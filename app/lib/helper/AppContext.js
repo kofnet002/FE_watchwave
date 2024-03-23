@@ -12,8 +12,10 @@ const AppContext = createContext()
 export const ContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true)
     const [loading, setLoading] = useState(false)
-    const [userData, setUserData] = useState()
+    const [email, setEmail] = useState()
     const [deliveries, setDeliveries] = useState()
+    const [error, setError] = useState(null);
+
     const route = useRouter();
 
     const isSecured = protocol => protocol === 'https:'
@@ -82,12 +84,56 @@ export const ContextProvider = ({ children }) => {
         }
     }
 
+    const registerAccount = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await fetch(`/api/register`, {
+                cache: "no-cache",
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: data.username,
+                    email: data.email,
+                    password: data.password,
+                }),
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.id) {
+                    setEmail(responseData.email);
+                    toast.success("Account Created Successfully!", { duration: 4000 });
+                    route.push("/account-verification");
+                } else {
+                    // Toast error messages from API response
+                    Object.keys(responseData).forEach((field) => {
+                        responseData[field].forEach((errorMessage) => {
+                            toast.error(errorMessage, { duration: 4000 });
+                        });
+                    });
+                }
+            } else {
+                // If response status is not ok, handle the error
+                toast.error("Failed to create account, please try again.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            toast.error("Something went wrong, please try again");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // ========================================================
     const contextData = {
         loading,
         loginUser,
-        userData,
-        setUserData
+        email,
+        registerAccount
     }
 
     return (
