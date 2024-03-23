@@ -9,12 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        // "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        // "gradient-conic":
+        //   "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        primary: "#630132",
+        disabled: "#F7E1E7",
+        // primaryLight: "#FBF0F3",
+        // cardBg: "#DF829C",
+        // cardBorder: "#C7305C",
+      }
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: [],
+  },
 };
 export default config;
