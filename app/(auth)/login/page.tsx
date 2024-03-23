@@ -47,7 +47,7 @@ const Page: FC<PageProps> = () => {
 
     return (
         <div>
-            <div className="mt-4 mb-16">
+            <div className="mt-4 mb-[20%]">
                 {/* <Logo path="/login" /> */}
             </div>
 
@@ -102,7 +102,7 @@ const Page: FC<PageProps> = () => {
                             <div className="text-center">
                                 <span className="text-neutral-400 text-base font-normal mr-2">Don&apos;t have an account?
                                 </span>
-                                <Link href={'/register'} className="text-zinc-900 text-base font-semibold hover:cursor-pointer hover:text-primary">
+                                <Link href={'/register'} className="text-base font-semibold hover:cursor-pointer hover:text-primary">
                                     Join us
                                 </Link>
                             </div>

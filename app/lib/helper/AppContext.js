@@ -128,12 +128,47 @@ export const ContextProvider = ({ children }) => {
         }
     };
 
+    const ActivateAccount = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await fetch(`/api/activateAccount`, {
+                cache: "no-cache",
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    uid: data.uid,
+                    token: data.token,
+                }),
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                if (!responseData.token) {
+                    toast.success('Account verified successfully', { duration: 5000 })
+                    route.push("/login");
+                } else {
+                    toast.error(responseData.token, { duration: 5000 })
+                }
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            toast.error("Something went wrong, please try again");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // ========================================================
     const contextData = {
         loading,
         loginUser,
         email,
-        registerAccount
+        registerAccount,
+        ActivateAccount
     }
 
     return (
