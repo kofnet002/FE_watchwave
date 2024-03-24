@@ -47,7 +47,7 @@ const Page: FC<PageProps> = () => {
 
     return (
         <div>
-            <div className="mt-4 mb-[20%]">
+            <div className="mt-4 mb-64">
                 {/* <Logo path="/login" /> */}
             </div>
 

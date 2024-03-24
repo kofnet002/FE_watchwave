@@ -69,7 +69,7 @@ export const ContextProvider = ({ children }) => {
 
                     toast.success('Login successful!', { duration: 4000 })
 
-                    // route.push('/home')
+                    route.push('/')
                 } else {
                     toast.error(responseData.detail, { duration: 4000 })
                     // await handleAccessTokenError(responseData.error)
@@ -232,6 +232,59 @@ export const ContextProvider = ({ children }) => {
         }
     };
 
+    const getAllVideos = async (accessToken, page) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/api/allvideos/?page=${page}`, {
+                cache: 'no-cache',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+
+            if (response.ok) {
+                const responseData = await response.json()
+                console.log(responseData);
+                return responseData
+            } else {
+                console.error('Failed to fetch videos')
+                setLoading(false)
+            }
+        } catch (error) {
+            console.error('Error:', error)
+            setLoading(false)
+        }
+
+    };
+
+    const singleVideo = async (accessToken, id) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/api/singlevideo/?id=${id}`, {
+                cache: 'no-cache',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+
+            if (response.ok) {
+                const responseData = await response.json()
+                setLoading(false)
+                console.log(responseData);
+                return responseData
+            } else {
+                console.error('Failed to fetch videos')
+                setLoading(false)
+            }
+        } catch (error) {
+            console.error('Error:', error)
+            setLoading(false)
+        }
+
+    };
+
     // ========================================================
     const contextData = {
         loading,
@@ -240,7 +293,9 @@ export const ContextProvider = ({ children }) => {
         registerAccount,
         ActivateAccount,
         passwordResetRequest,
-        passwordResetConfirmation
+        passwordResetConfirmation,
+        getAllVideos,
+        singleVideo
     }
 
     return (
