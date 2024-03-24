@@ -16,9 +16,10 @@ const Page: FC<PageProps> = () => {
     // const [loading, setLoading] = useState(false)
     // const isSecured = (protocol: string) => protocol === 'https:'
 
-    const { loading, loginUser } = useContext(Context)
+    const { loading, registerAccount } = useContext(Context)
 
     const [formData, setFormData] = useState({
+        username: "",
         email: "",
         password: "",
     });
@@ -29,6 +30,7 @@ const Page: FC<PageProps> = () => {
 
     const disableButton = () => {
         return (
+            formData.username != '' &&
             formData.email != '' &&
             formData.password != ''
         )
@@ -41,8 +43,7 @@ const Page: FC<PageProps> = () => {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        await loginUser(formData)
-
+        await registerAccount(formData)
     }
 
     return (
@@ -56,13 +57,17 @@ const Page: FC<PageProps> = () => {
                 <div className="max-w-[414px] mx-auto">
                     <div className="flex flex-col gap-6">
                         <div className="w-full h-[30px] justify-center items-center gap-2 inline-flex">
-                            <div className="text-whiter text-3xl font-normal leading-[30px]">Welcome back</div>
+                            <div className="text-whiter text-3xl font-normal leading-[30px]">WatchWave</div>
                             <div className="w-6 h-6 justify-center items-center flex">
                                 {/* <Image src={PartyingFace} priority width={50} height={50} alt="paryting-emoji-face" className="w-6 h-6" /> */}
                             </div>
                         </div>
 
                         <form action="" method="POST" className="flex flex-col gap-6" onSubmit={handleSubmit}>
+                            <div className={`h-[53px] justify-start items-start gap-2 inline-flex`}>
+                                <input placeholder="Username" type="text" defaultValue={formData.username} onChange={handleOnChange} name="username" className={`w-full focus-within:outline-none grow shrink basis-0 h-[53px] p-4 text-black rounded-xl border border-stone-300  justify-start items-center flex`} />
+                            </div>
+
                             <div className={`h-[53px] justify-start items-start gap-2 inline-flex mb-4`}>
                                 <input placeholder="Email" type="email" defaultValue={formData.email} onChange={handleOnChange} name="email" className={`w-full focus-within:outline-none grow shrink basis-0 h-[53px] p-4 text-black rounded-xl border border-stone-300  justify-start items-center flex`} />
                             </div>
@@ -85,25 +90,21 @@ const Page: FC<PageProps> = () => {
                                 )}
                             </div>
 
-                            <span className="text-end">
-                                <Link href={'/reset-password'} className="text-neutral-400 text-base font-normal hover:cursor-pointer hover:text-primary min-w-fit">Forgot Password?</Link>
-                            </span>
-
                             <Button
                                 disabled={!disableButton() || loading}
                                 onClick={handleSubmit} className="w-full h-14 px-5 py-4 justify-center items-center gap-1 inline-flex mb-8">
                                 {loading ? (
                                     <span className="loading loading-spinner loading-md bg-white"></span>
                                 ) : (
-                                    <div className="text-white text-lg font-semibold leading-normal">Log in</div>
+                                    <div className="text-white text-lg font-semibold leading-normal">Sign in</div>
                                 )}
                             </Button>
 
                             <div className="text-center">
-                                <span className="text-neutral-400 text-base font-normal mr-2">Don&apos;t have an account?
+                                <span className="text-neutral-400 text-base font-normal mr-2">Have an account?
                                 </span>
-                                <Link href={'/register'} className="text-base font-semibold hover:cursor-pointer hover:text-primary">
-                                    Join us
+                                <Link href={'/login'} className="text-base font-semibold hover:cursor-pointer hover:text-primary">
+                                    Log in
                                 </Link>
                             </div>
                         </form>
