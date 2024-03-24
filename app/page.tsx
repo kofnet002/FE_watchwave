@@ -18,7 +18,7 @@ import {
 interface PageProps { }
 
 const Page: FC = () => {
-  const { loading, getAllVideos } = useContext(Context)
+  const { loading, getAllVideos, updateTokens } = useContext(Context)
   const [videoData, setVideoData] = useState<any>()
   const [currentPage, setCurrentPage] = useState(1);
   const [showShare, setShowShare] = useState<boolean>(false);
@@ -34,8 +34,17 @@ const Page: FC = () => {
 
   const fetchVideos = async (page: number) => {
     const accessToken = Cookies.get('access-token') as string
-    const _videos = await getAllVideos(accessToken, page)
-    if (_videos) setVideoData(_videos)
+    if (accessToken) {
+      const _videos = await getAllVideos(accessToken, page)
+      if (_videos) setVideoData(_videos)
+    } else {
+      const _tokens = await updateTokens()
+      if (_tokens) {
+        const access_token = Cookies.get('access-token') as string
+        const _videos = await getAllVideos(access_token, page)
+        if (_videos) setVideoData(_videos)
+      }
+    }
   }
 
   useEffect(() => {
@@ -95,7 +104,7 @@ const Page: FC = () => {
                     {showShare &&
                       <Modal title="Share" setIsModalOpen={setShowShare} isModalOpen={showShare}>
                         <div className="my-5 w-full overflow-x-auto scrollbar">
-                          <div className="flex items-center gap-6">
+                          <div className="flex items-center gap-4">
                             <WhatsappShareButton url={shareUrl} className="flex flex-col justify-center items-center">
                               <WhatsappIcon size={52} round={true} />
                               <p>WhatsApp</p>

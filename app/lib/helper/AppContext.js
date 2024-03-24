@@ -47,12 +47,12 @@ export const ContextProvider = ({ children }) => {
                 console.log(responseData);
                 if (responseData.success) {
                     const access_expires = new Date()
-                    access_expires.setTime(access_expires.getTime() + 30 * 60 * 1000) // expires access token in 30 mins
+                    access_expires.setTime(access_expires.getTime() + 480 * 60 * 60 * 1000) // expires access token in 20 days
 
                     const refresh_expires = new Date()
                     refresh_expires.setTime(
-                        refresh_expires.getTime() + 24 * 60 * 60 * 1000
-                    ) // expires refresh token in 24 hours
+                        refresh_expires.getTime() + 492 * 60 * 60 * 1000
+                    ) // expires refresh token in 20 days and 12 hours
 
                     // Usage in a browser environment
                     const currentProtocol = window.location.protocol
@@ -69,7 +69,13 @@ export const ContextProvider = ({ children }) => {
 
                     toast.success('Login successful!', { duration: 4000 })
 
-                    route.push('/')
+                    const redirectUrl = localStorage.getItem('redirectUrl');
+                    if (redirectUrl) {
+                        route.push(redirectUrl);
+                        localStorage.removeItem('redirectUrl'); // Clear the stored URL
+                    } else {
+                        route.push('/');
+                    }
                 } else {
                     toast.error(responseData.detail, { duration: 4000 })
                     // await handleAccessTokenError(responseData.error)
@@ -285,6 +291,54 @@ export const ContextProvider = ({ children }) => {
 
     };
 
+    const updateTokens = async () => {
+        const _refreshToken = Cookies.get('refresh-token')
+        if (_refreshToken) {
+            try {
+                setLoading(true);
+                const response = await fetch(`/api/updateTokens`, {
+                    cache: 'no-cache',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        refresh: _refreshToken
+                    })
+                })
+
+                if (response.ok) {
+                    const responseData = await response.json()
+                    if (responseData.success) {
+                        const access_expires = new Date()
+                        access_expires.setTime(access_expires.getTime() + 480 * 60 * 60 * 1000)
+
+                        // Usage in a browser environment
+                        const currentProtocol = window.location.protocol
+                        const secured = isSecured(currentProtocol)
+                        Cookies.set('access-token', responseData.data.access, {
+                            expires: access_expires,
+                            secure: secured
+                        })
+                        return true
+                    } else {
+                        toast.error(responseData.detail, { duration: 4000 })
+                        return false
+                    }
+                }
+            } catch (error) {
+                setLoading(false);
+                console.log('Error: ' + error)
+                return false
+            }
+        } else {
+            setLoading(false);
+            Cookies.remove('access-token')
+            Cookies.remove('refresh-token')
+            route.push('/login')
+        }
+        // if (loading) setLoading(false)
+    }
     // ========================================================
     const contextData = {
         loading,
@@ -295,7 +349,8 @@ export const ContextProvider = ({ children }) => {
         passwordResetRequest,
         passwordResetConfirmation,
         getAllVideos,
-        singleVideo
+        singleVideo,
+        updateTokens
     }
 
     return (

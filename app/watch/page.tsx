@@ -3,7 +3,7 @@
 import { FC, useContext, useEffect, useState } from "react";
 import Context from "@/app/lib/helper/AppContext";
 import Cookies from "js-cookie";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { FacebookIcon, TelegramShareButton, TelegramIcon, TwitterIcon } from "react-share";
 import Modal from "@/app/components/Modal";
@@ -12,24 +12,32 @@ import Modal from "@/app/components/Modal";
 interface PageProps { }
 
 const Page: FC = () => {
-    const { loading, singleVideo } = useContext(Context)
+    const { loading, singleVideo, updateTokens } = useContext(Context)
     const [videoData, setVideoData] = useState<any>()
-    const [currentPage, setCurrentPage] = useState(1);
     const [showShare, setShowShare] = useState<boolean>(false);
     const [copied, setCopied] = useState(false);
-
+    const router = useRouter();
     const getParams = useSearchParams();
     const frontEndUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
     const fetchVideos = async (id: string) => {
         const accessToken = Cookies.get('access-token') as string
-        const _videos = await singleVideo(accessToken, id)
-        console.log('videos', _videos);
-
-        if (_videos) setVideoData(_videos)
+        if (accessToken) {
+            const _videos = await singleVideo(accessToken, id)
+            if (_videos) setVideoData(_videos)
+        } else {
+            const _tokens = await updateTokens()
+            if (_tokens) {
+                const access_token = Cookies.get('access-token') as string
+                const _videos = await singleVideo(access_token, id)
+                if (_videos) setVideoData(_videos)
+            }
+        }
     }
 
     useEffect(() => {
+        const url = window.location.href;
+        localStorage.setItem('redirectUrl', url);
         const videoId = getParams.get('v') as string;
         fetchVideos(videoId)
     }, [])
