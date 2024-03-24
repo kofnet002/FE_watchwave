@@ -94,7 +94,7 @@ const Page: FC<PageProps> = () => {
                                 disabled={!disableButton() || loading}
                                 onClick={handleSubmit} className="w-full h-14 px-5 py-4 justify-center items-center gap-1 inline-flex mb-8">
                                 {loading ? (
-                                    <span className="loading loading-spinner loading-md"></span>
+                                    <span className="loading loading-spinner loading-md bg-white"></span>
                                 ) : (
                                     <div className="text-white text-lg font-semibold leading-normal">Sign in</div>
                                 )}

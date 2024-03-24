@@ -162,13 +162,85 @@ export const ContextProvider = ({ children }) => {
         }
     };
 
+    const passwordResetRequest = async (data) => {
+        try {
+            setLoading(true);
+
+            const response = await fetch(`/api/password-reset-request`, {
+                cache: "no-cache",
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: data.email,
+                }),
+            });
+
+            if (response.ok) {
+                toast.success('Password reset link sent successfully', { duration: 5000 })
+                route.push('/login')
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            // toast.error("Something went wrong, please try again");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const passwordResetConfirmation = async (data) => {
+        if (!data.uid || !data.token) {
+            toast.error('Invalid password reset link', { duration: 5000 })
+        }
+        try {
+            setLoading(true);
+
+            const response = await fetch(`/api/password-reset-confirmation`, {
+                cache: "no-cache",
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    uid: data.uid,
+                    token: data.token,
+                    new_password: data.password1,
+                }),
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                if (responseData.token || responseData.new_password) {
+                    responseData.token && toast.error(responseData.token, { duration: 5000 })
+                    responseData.new_password && toast.error(responseData.new_password, { duration: 5000 })
+                } else {
+                    toast.success('Password reset successfully', { duration: 5000 })
+                    route.push('/login')
+                }
+
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            toast.success('Password reset successfully', { duration: 5000 })
+            route.push('/login')
+            // toast.error("Something went wrong, please try again");
+
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // ========================================================
     const contextData = {
         loading,
         loginUser,
         email,
         registerAccount,
-        ActivateAccount
+        ActivateAccount,
+        passwordResetRequest,
+        passwordResetConfirmation
     }
 
     return (
