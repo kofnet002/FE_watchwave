@@ -45,7 +45,6 @@ export const ContextProvider = ({ children }) => {
 
             if (response.ok) {
                 const responseData = await response.json()
-                console.log(responseData);
                 if (responseData.success) {
                     const access_expires = new Date()
                     access_expires.setTime(access_expires.getTime() + 480 * 60 * 60 * 1000) // expires access token in 20 days
@@ -84,7 +83,6 @@ export const ContextProvider = ({ children }) => {
             }
         } catch (error) {
             setLoading(false)
-            console.log(error)
             toast.error('Something went wrong, please try again', { duration: 4000 })
         } finally {
             setLoading(false)
@@ -153,13 +151,12 @@ export const ContextProvider = ({ children }) => {
             });
 
             if (response.ok) {
+                toast.success('Account verified successfully', { duration: 5000 })
+                route.push("/login");
+            } else {
                 const responseData = await response.json();
-                if (!responseData.token) {
-                    toast.success('Account verified successfully', { duration: 5000 })
-                    route.push("/login");
-                } else {
-                    toast.error(responseData.token, { duration: 5000 })
-                }
+                toast.error(responseData.token, { duration: 5000 })
+
             }
         } catch (error) {
             console.error("Error:", error);
@@ -219,21 +216,21 @@ export const ContextProvider = ({ children }) => {
 
             if (response.ok) {
                 const responseData = await response.json();
-                if (responseData.token || responseData.new_password) {
-                    responseData.token && toast.error(responseData.token, { duration: 5000 })
-                    responseData.new_password && toast.error(responseData.new_password, { duration: 5000 })
-                } else {
+                if (!responseData.token && !responseData.new_password) {
                     toast.success('Password reset successfully', { duration: 5000 })
                     route.push('/login')
+                } else {
+                    if (responseData.token || responseData.new_password) {
+                        responseData.token && toast.error(responseData.token, { duration: 5000 })
+                        responseData.new_password && toast.error(responseData.new_password, { duration: 5000 })
+                    }
                 }
-
             }
         } catch (error) {
             console.error("Error:", error);
             toast.success('Password reset successfully', { duration: 5000 })
             route.push('/login')
             // toast.error("Something went wrong, please try again");
-
         } finally {
             setLoading(false);
         }
@@ -252,7 +249,6 @@ export const ContextProvider = ({ children }) => {
 
             if (response.ok) {
                 const responseData = await response.json()
-                console.log(responseData);
                 setLoading(false)
                 return responseData
             } else {
@@ -280,7 +276,6 @@ export const ContextProvider = ({ children }) => {
             if (response.ok) {
                 const responseData = await response.json()
                 setLoading(false)
-                console.log(responseData);
                 return responseData
             } else {
                 console.error('Failed to fetch videos')
@@ -306,7 +301,6 @@ export const ContextProvider = ({ children }) => {
 
             if (response.ok) {
                 const responseData = await response.json()
-                console.log('user', responseData);
                 if (responseData.success) {
                     setUserData(responseData.data)
                 }
@@ -315,6 +309,7 @@ export const ContextProvider = ({ children }) => {
             } else {
                 console.error('Failed to user data')
                 setLoading(false)
+                return false
             }
         } catch (error) {
             console.error('Error:', error)
@@ -360,7 +355,6 @@ export const ContextProvider = ({ children }) => {
                 }
             } catch (error) {
                 setLoading(false);
-                console.log('Error: ' + error)
                 return false
             }
         } else {

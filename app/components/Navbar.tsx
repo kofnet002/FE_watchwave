@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FC, useContext, useEffect } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Logo from "@/images/logo.png"
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -14,27 +14,38 @@ const Page: FC = () => {
     const { updateTokens, getUserData, userData } = useContext(Context)
 
     const route = useRouter();
-
+    const [username, setUsername] = useState<string>('')
     const fetchUserData = async () => {
         const accessToken = Cookies.get('access-token') as string
         if (accessToken) {
-            await getUserData(accessToken)
+            const _data = await getUserData(accessToken)
+            if (_data) {
+                Cookies.set('_u_n', _data.data.username)
+
+            }
         } else {
             const _tokens = await updateTokens()
             if (_tokens) {
                 const access_token = Cookies.get('access-token') as string
-                await getUserData(access_token)
+                const _data = await getUserData(access_token)
+                if (_data) Cookies.set('_u_n', _data.data.username)
             }
         }
     }
 
     useEffect(() => {
-        fetchUserData()
+        const checkUserData = Cookies.get('_u_n')
+        if (!checkUserData) {
+            fetchUserData()
+        }
+        const getUsername = Cookies.get('_u_n') as string;
+        if (getUsername) setUsername(getUsername)
     }, [])
 
     const handleLogout = () => {
         Cookies.remove('access-token')
         Cookies.remove('refresh-token')
+        Cookies.remove('_u_n')
         Cookies.remove('redirectUrl'); // Clear the stored URL
         route.push('/login')
         toast.success('Log out successful', { duration: 5000 })
@@ -42,8 +53,8 @@ const Page: FC = () => {
 
     return (
 
-        <div className="navbar bg-base-100 z-50">
-            <div onClick={() => route.push('/')} className="flex-1 btn btn-ghost">
+        <div className="navbar bg-base-100 flex justify-between z-50">
+            <div onClick={() => route.push('/')} className="hover:cursor-pointer">
                 <div className="flex items-center justify-start w-full">
                     <Image className="w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />
                     <p className="text-xl">WatchWave</p>
@@ -55,7 +66,7 @@ const Page: FC = () => {
                         <details>
                             <summary>
                                 <div>
-                                    @{userData && userData.username}
+                                    @{userData && userData.username || username}
                                 </div>
                                 <div className="avatar">
                                     <div className="w-7 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">

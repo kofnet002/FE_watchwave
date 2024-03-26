@@ -21,13 +21,11 @@ export async function POST(req: NextRequest) {
 
         if (response.ok) {
             const responseData = await response.json();
-            console.log('rs', responseData);
 
             return new Response(JSON.stringify(responseData))
         }
         else {
             const errorData = await response.json();
-            console.log('ed', errorData);
 
             return new Response(JSON.stringify(errorData));
         }

@@ -19,7 +19,6 @@ export const formattedTime = (time_stamp: any) => {
     // Convert hours from 24-hour format to 12-hour format
     const formattedHours = hours % 12 || 12;
     return `${formattedHours}:${minutes < 10 ? '0' + minutes : minutes} ${amOrPm}`
-    // console.log(`Current Time: ${formattedHours}:${minutes < 10 ? '0' + minutes : minutes} ${amOrPm}`);
 
 }
 

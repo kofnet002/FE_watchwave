@@ -26,7 +26,6 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
 
         if (response.ok) {
             const responseData = await response.json();
-            console.log('res', responseData);
             return new Response(JSON.stringify(responseData))
         } else {
             const errorData = await response.json();

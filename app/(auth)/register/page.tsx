@@ -49,7 +49,7 @@ const Page: FC<PageProps> = () => {
 
     return (
         <div>
-            <div className="mt-4 mb-52">
+            <div className="mt-4 mb-20">
                 <div className="flex items-center justify-start w-full">
                     <Image className="w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />
                     <p className="text-xl">WatchWave</p>
@@ -57,11 +57,11 @@ const Page: FC<PageProps> = () => {
             </div>
 
 
-            <div className="mx-auto px-5 ">
+            <div className="mx-auto px-5 mb-10">
                 <div className="max-w-[414px] mx-auto">
                     <div className="flex flex-col gap-6">
                         <div className="w-full h-[30px] justify-center items-center gap-2 flex flex-col">
-                            <div className="text-whiter text-3xl font-normal leading-[30px]">Joinus</div>
+                            <div className="text-whiter text-3xl font-normal leading-[30px]">Join us</div>
                             <i>Create an account to start watching...</i>
                         </div>
 

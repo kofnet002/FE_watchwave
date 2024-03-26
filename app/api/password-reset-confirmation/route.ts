@@ -5,7 +5,6 @@ const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function POST(req: NextRequest) {
     const formData = await req.json()
-    console.log(formData);
     try {
         const response = await fetch(`${baseUrl}/api/v1/auth/users/reset_password_confirm/`, {
             cache: 'no-cache',
