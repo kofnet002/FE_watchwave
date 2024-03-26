@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, Suspense, useContext, useEffect, useState } from "react";
 import Context from "@/app/lib/helper/AppContext";
 import Cookies from "js-cookie";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,6 +13,14 @@ import Plyr from "plyr";
 
 
 interface PageProps { }
+
+// Wrap your component with Suspense
+const PageWithSuspense: FC = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <Page />
+    </Suspense>
+);
+
 
 const Page: FC = () => {
     const { loading, singleVideo, updateTokens } = useContext(Context)
@@ -110,4 +118,4 @@ const Page: FC = () => {
     )
 };
 
-export default Page;
+export default PageWithSuspense;

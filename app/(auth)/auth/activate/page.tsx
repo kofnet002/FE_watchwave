@@ -1,17 +1,21 @@
 'use client';
 
-import { FC, useState, useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import Context from "@/app/lib/helper/AppContext";
 import { useSearchParams } from "next/navigation";
+// Import Suspense from react
+import { FC, useState, useContext, useEffect, Suspense } from "react";
 
+// Wrap your component with Suspense
+const PageWithSuspense: FC = () => (
+    <Suspense fallback={<div>Loading...</div>}>
+        <Page />
+    </Suspense>
+);
 
-interface PageProps { }
-
-const Page: FC<PageProps> = () => {
-
-    const { loading, ActivateAccount } = useContext(Context)
-
+// Define your Page component
+const Page: FC = () => {
+    const { loading, ActivateAccount } = useContext(Context);
     const getParams = useSearchParams();
 
     useEffect(() => {
@@ -22,7 +26,7 @@ const Page: FC<PageProps> = () => {
         } else {
             toast.error('Invalid activation link')
         }
-    }, [])
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
@@ -32,4 +36,6 @@ const Page: FC<PageProps> = () => {
         </div>
     );
 };
-export default Page;
+
+// Export the wrapped component
+export default PageWithSuspense;
