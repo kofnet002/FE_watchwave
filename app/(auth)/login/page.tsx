@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Context from "@/app/lib/helper/AppContext";
 import Cookies from 'js-cookie';
 import Button from "@/app/components/ui/Button";
+import Logo from "@/images/logo.png"
 
 
 interface PageProps { }
@@ -47,8 +48,11 @@ const Page: FC<PageProps> = () => {
 
     return (
         <div>
-            <div className="mt-4 mb-64">
-                {/* <Logo path="/login" /> */}
+            <div className="mt-4 mb-52">
+                <div className="flex items-center justify-start w-full">
+                    <Image className="w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />
+                    <p className="text-xl">WatchWave</p>
+                </div>
             </div>
 
 
@@ -90,13 +94,10 @@ const Page: FC<PageProps> = () => {
                             </span>
 
                             <Button
+                                loading={loading}
                                 disabled={!disableButton() || loading}
                                 onClick={handleSubmit} className="w-full h-14 px-5 py-4 justify-center items-center gap-1 inline-flex mb-8">
-                                {loading ? (
-                                    <span className="loading loading-spinner loading-md bg-white"></span>
-                                ) : (
-                                    <div className="text-white text-lg font-semibold leading-normal">Log in</div>
-                                )}
+                                Log in
                             </Button>
 
                             <div className="text-center">

@@ -19,6 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+        <script async src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+        <script>
+          const player = new Plyr('#player');
+        </script> */}
+      </head>
       <body className={inter.className}>
         <ContextProvider>
           <Toaster position="top-center" reverseOrder={false} />

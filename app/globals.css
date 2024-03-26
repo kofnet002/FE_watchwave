@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --plyr-color-main: #630132;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,4 +51,7 @@ body {
   background: #144355;
   border-radius: 1px;
   /* Rounded corners for the thumb */
+}
+
+.player {
 }

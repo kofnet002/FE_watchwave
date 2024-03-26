@@ -27,14 +27,14 @@ const buttonVariants = cva(
 export interface ButtonProps
     extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-    isLoading?: boolean;
+    loading?: boolean;
 }
 
 const Button: FC<ButtonProps> = ({
     className,
     children,
     variant,
-    isLoading,
+    loading,
     size,
     ...props
 }) => {
@@ -42,11 +42,11 @@ const Button: FC<ButtonProps> = ({
         <div>
             <button
                 className={cn(buttonVariants({ variant, size, className }))}
-                disabled={isLoading}
+                disabled={loading}
                 {...props}
             >
-                {isLoading ? (
-                    <span className="loading loading-spinner loading-md mr-3 bg-white"></span>
+                {loading ? (
+                    <span className="loading loading-spinner loading-md bg-white"></span>
                 ) : children}
             </button>
         </div>

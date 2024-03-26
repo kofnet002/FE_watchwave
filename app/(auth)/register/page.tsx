@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Context from "@/app/lib/helper/AppContext";
 import Cookies from 'js-cookie';
 import Button from "@/app/components/ui/Button";
+import Logo from "@/images/logo.png"
 
 
 interface PageProps { }
@@ -48,19 +49,20 @@ const Page: FC<PageProps> = () => {
 
     return (
         <div>
-            <div className="mt-4 mb-64">
-                {/* <Logo path="/login" /> */}
+            <div className="mt-4 mb-52">
+                <div className="flex items-center justify-start w-full">
+                    <Image className="w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />
+                    <p className="text-xl">WatchWave</p>
+                </div>
             </div>
 
 
             <div className="mx-auto px-5 ">
                 <div className="max-w-[414px] mx-auto">
                     <div className="flex flex-col gap-6">
-                        <div className="w-full h-[30px] justify-center items-center gap-2 inline-flex">
-                            <div className="text-whiter text-3xl font-normal leading-[30px]">WatchWave</div>
-                            <div className="w-6 h-6 justify-center items-center flex">
-                                {/* <Image src={PartyingFace} priority width={50} height={50} alt="paryting-emoji-face" className="w-6 h-6" /> */}
-                            </div>
+                        <div className="w-full h-[30px] justify-center items-center gap-2 flex flex-col">
+                            <div className="text-whiter text-3xl font-normal leading-[30px]">Joinus</div>
+                            <i>Create an account to start watching...</i>
                         </div>
 
                         <form action="" method="POST" className="flex flex-col gap-6" onSubmit={handleSubmit}>
@@ -91,13 +93,10 @@ const Page: FC<PageProps> = () => {
                             </div>
 
                             <Button
+                                loading={loading}
                                 disabled={!disableButton() || loading}
                                 onClick={handleSubmit} className="w-full h-14 px-5 py-4 justify-center items-center gap-1 inline-flex mb-8">
-                                {loading ? (
-                                    <span className="loading loading-spinner loading-md bg-white"></span>
-                                ) : (
-                                    <div className="text-white text-lg font-semibold leading-normal">Sign in</div>
-                                )}
+                                Sign in
                             </Button>
 
                             <div className="text-center">

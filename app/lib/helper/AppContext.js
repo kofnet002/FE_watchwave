@@ -15,6 +15,7 @@ export const ContextProvider = ({ children }) => {
     const [email, setEmail] = useState()
     const [deliveries, setDeliveries] = useState()
     const [error, setError] = useState(null);
+    const [userData, setUserData] = useState();
 
     const route = useRouter();
 
@@ -69,10 +70,10 @@ export const ContextProvider = ({ children }) => {
 
                     toast.success('Login successful!', { duration: 4000 })
 
-                    const redirectUrl = localStorage.getItem('redirectUrl');
+                    const redirectUrl = Cookies.get('redirectUrl');
                     if (redirectUrl) {
                         route.push(redirectUrl);
-                        localStorage.removeItem('redirectUrl'); // Clear the stored URL
+                        Cookies.remove('redirectUrl'); // Clear the stored URL
                     } else {
                         route.push('/');
                     }
@@ -252,6 +253,7 @@ export const ContextProvider = ({ children }) => {
             if (response.ok) {
                 const responseData = await response.json()
                 console.log(responseData);
+                setLoading(false)
                 return responseData
             } else {
                 console.error('Failed to fetch videos')
@@ -282,6 +284,36 @@ export const ContextProvider = ({ children }) => {
                 return responseData
             } else {
                 console.error('Failed to fetch videos')
+                setLoading(false)
+            }
+        } catch (error) {
+            console.error('Error:', error)
+            setLoading(false)
+        }
+
+    };
+
+    const getUserData = async (accessToken) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/api/userData`, {
+                cache: 'no-cache',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+
+            if (response.ok) {
+                const responseData = await response.json()
+                console.log('user', responseData);
+                if (responseData.success) {
+                    setUserData(responseData.data)
+                }
+                setLoading(false)
+                return responseData
+            } else {
+                console.error('Failed to user data')
                 setLoading(false)
             }
         } catch (error) {
@@ -350,7 +382,9 @@ export const ContextProvider = ({ children }) => {
         passwordResetConfirmation,
         getAllVideos,
         singleVideo,
-        updateTokens
+        updateTokens,
+        getUserData,
+        userData
     }
 
     return (

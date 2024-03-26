@@ -114,13 +114,10 @@ const Page: FC<PageProps> = () => {
                             </div>
 
                             <Button
+                                loading={loading}
                                 disabled={disableButton() || loading || error}
                                 onClick={handleSubmit} className="w-full h-14 px-5 py-4 justify-center items-center gap-1 inline-flex mb-8">
-                                {loading ? (
-                                    <span className="loading loading-spinner loading-md bg-white"></span>
-                                ) : (
-                                    <div className="text-white text-lg font-semibold leading-normal">Confirm</div>
-                                )}
+                                Confirm
                             </Button>
 
                             <div className="text-center">

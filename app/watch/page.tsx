@@ -7,6 +7,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import { FacebookIcon, TelegramShareButton, TelegramIcon, TwitterIcon } from "react-share";
 import Modal from "@/app/components/Modal";
+import Navbar from "../components/Navbar";
+import ShareVideoModal from "../components/ShareVideoModal";
+import Plyr from "plyr";
 
 
 interface PageProps { }
@@ -20,7 +23,7 @@ const Page: FC = () => {
     const getParams = useSearchParams();
     const frontEndUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
-    const fetchVideos = async (id: string) => {
+    const fetchVideo = async (id: string) => {
         const accessToken = Cookies.get('access-token') as string
         if (accessToken) {
             const _videos = await singleVideo(accessToken, id)
@@ -36,36 +39,27 @@ const Page: FC = () => {
     }
 
     useEffect(() => {
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const player = new Plyr('#player');
+        // });
+
         const url = window.location.href;
-        localStorage.setItem('redirectUrl', url);
+        Cookies.set('redirectUrl', url);
+
+        const accessToken = Cookies.get('access-token') as string
+        if (!accessToken) router.push('/');
         const videoId = getParams.get('v') as string;
-        fetchVideos(videoId)
+        fetchVideo(videoId)
     }, [])
 
     const shareUrl = `${frontEndUrl}/watch?v=${videoData && videoData.id}`
 
+    // const player = new Plyr('#player');
+
     return (
         <div>
-            <div className="navbar bg-base-100">
-                <div className="flex-1">
-                    <a className="btn btn-ghost text-xl">WatchWave</a>
-                </div>
-                <div className="flex-none">
-                    <ul className="menu menu-horizontal px-1">
-                        <li><a>Link</a></li>
-                        <li>
-                            <details>
-                                <summary>
-                                    Parent
-                                </summary>
-                                <ul className="p-2 bg-base-100 rounded-t-none">
-                                    <li><a>Link 1</a></li>
-                                    <li><a>Link 2</a></li>
-                                </ul>
-                            </details>
-                        </li>
-                    </ul>
-                </div>
+            <div>
+                <Navbar />
             </div>
 
             {loading ?
@@ -76,11 +70,13 @@ const Page: FC = () => {
                 )
                 : (
                     <div className="mb-8">
-                        <video className="h-auto w-full object-cover mb-5" src={videoData && videoData.video_url} autoPlay controls title={videoData && videoData.title}></video>
-
+                        <video className="h-[70dvh] w-full object-contain mb-5" src={videoData && videoData.video_url} autoPlay controls title={videoData && videoData.title}></video>
+                        {/* <video id="player" playsInline controls autoPlay loop className="mb-10 h-auto w-full object-cover">
+                            <source src={videoData && videoData.video_url} type="video/mp4" />
+                        </video> */}
                         <div className="px-4 md:px-6 lg:px-8">
                             <div className="">
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center mb-7">
                                     <h2 className="font-bold text-lg md:text-xl lg:text-2xl">{videoData && videoData.title}</h2>
 
                                     <div className="flex justify-end me-5" >
@@ -93,38 +89,13 @@ const Page: FC = () => {
                                         </div>
 
                                         {showShare &&
-                                            <Modal title="Share" setIsModalOpen={setShowShare} isModalOpen={showShare}>
-
-                                                <div className="my-5">
-                                                    <TelegramShareButton url="`${shareUrl}`">
-                                                        <TelegramIcon size={32} round={true} />
-                                                    </TelegramShareButton>
-                                                </div>
-
-                                                <div className="flex items-center justify-between border rounded-md p-2">
-                                                    <p className="w-[200px] truncate overflow-ellipsis">{videoData && videoData.video_url}</p>
-
-                                                    <button className=""
-                                                        onClick={() => {
-                                                            navigator.clipboard
-                                                                .writeText(
-                                                                    `${shareUrl}`
-                                                                )
-                                                                .then(() => setCopied(true))
-                                                                .catch((error) =>
-                                                                    toast.error(
-                                                                        "Error copying to clipboard:",
-                                                                        error
-                                                                    )
-                                                                );
-                                                            copied &&
-                                                                toast.success("Link copied to clipboard");
-                                                        }}
-                                                    >Copy
-                                                    </button>
-                                                </div>
-
-                                            </Modal>
+                                            <ShareVideoModal
+                                                copied={copied}
+                                                setCopied={setCopied}
+                                                setShowShare={setShowShare}
+                                                shareUrl={shareUrl}
+                                                showShare={showShare}
+                                            />
                                         }
 
                                     </div>
