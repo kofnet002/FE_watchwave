@@ -1,3 +1,5 @@
+'use client'
+
 import { FC, useState, useContext, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
