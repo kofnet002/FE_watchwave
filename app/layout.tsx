@@ -3,7 +3,7 @@ import { Kanit } from "next/font/google";
 import "./globals.css";
 import { ContextProvider } from "./lib/helper/AppContext";
 import { Toaster } from "react-hot-toast";
-
+import Script from 'next/script';
 
 const inter = Kanit({ subsets: ["latin"], weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] });
 
@@ -17,7 +17,6 @@ export const metadata: Metadata = {
     "A simplified video platform for all your videos.",
   keywords:
     "video, platform, creators, viewers, watchwave, watch, wave, videos",
-  themeColor: "#630132",
   openGraph: {
     title: "WatchWave",
     description:
@@ -35,16 +34,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
-        <script async src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-        <script>
-          const player = new Plyr('#player');
-        </script> */}
+        {/* <Script async src='./script.js'></Script> */}
       </head>
       <body className={inter.className}>
         <ContextProvider>
           <Toaster position="top-center" reverseOrder={false} />
-
           {children}
         </ContextProvider>
       </body>
