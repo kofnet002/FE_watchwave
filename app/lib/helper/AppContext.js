@@ -249,11 +249,13 @@ export const ContextProvider = ({ children }) => {
 
             if (response.ok) {
                 const responseData = await response.json()
-                setLoading(false)
-                return responseData
-            } else {
-                console.error('Failed to fetch videos')
-                setLoading(false)
+                if (responseData.results.success) {
+                    setLoading(false)
+                    return responseData
+                } else {
+                    console.error('Failed to fetch videos')
+                    setLoading(false)
+                }
             }
         } catch (error) {
             console.error('Error:', error)
@@ -275,11 +277,14 @@ export const ContextProvider = ({ children }) => {
 
             if (response.ok) {
                 const responseData = await response.json()
-                setLoading(false)
-                return responseData
-            } else {
-                console.error('Failed to fetch videos')
-                setLoading(false)
+                if (responseData.success) {
+                    setLoading(false)
+                    return responseData.data
+                } else {
+                    console.error('Failed to fetch video')
+                    toast.error('Failed to fetch video, try again', { duration: 4000 })
+                    setLoading(false)
+                }
             }
         } catch (error) {
             console.error('Error:', error)
@@ -290,7 +295,7 @@ export const ContextProvider = ({ children }) => {
 
     const getUserData = async (accessToken) => {
         try {
-            setLoading(true)
+            // setLoading(true)
             const response = await fetch(`/api/userData`, {
                 cache: 'no-cache',
                 method: 'GET',
@@ -304,16 +309,16 @@ export const ContextProvider = ({ children }) => {
                 if (responseData.success) {
                     setUserData(responseData.data)
                 }
-                setLoading(false)
+                // setLoading(false)
                 return responseData
             } else {
                 console.error('Failed to user data')
-                setLoading(false)
+                // setLoading(false)
                 return false
             }
         } catch (error) {
             console.error('Error:', error)
-            setLoading(false)
+            // setLoading(false)
         }
 
     };
@@ -365,6 +370,61 @@ export const ContextProvider = ({ children }) => {
         }
         // if (loading) setLoading(false)
     }
+
+    const getNextVideo = async (accessToken, id) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/api/getNextVideo/?id=${id}`, {
+                cache: 'no-cache',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+
+            if (response.ok) {
+                const responseData = await response.json()
+                if (responseData.success) {
+                    // setLoading(false)
+                    return responseData.data
+                } else {
+                    console.error('Failed to fetch videos')
+                    setLoading(false)
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error)
+            setLoading(false)
+        }
+    };
+
+    const getPrevVideo = async (accessToken, id) => {
+        try {
+            setLoading(true)
+            const response = await fetch(`/api/getPrevVideo/?id=${id}`, {
+                cache: 'no-cache',
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+
+            if (response.ok) {
+                const responseData = await response.json()
+                if (responseData.success) {
+                    // setLoading(false)
+                    return responseData.data
+                } else {
+                    console.error('Failed to fetch videos')
+                    setLoading(false)
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error)
+            setLoading(false)
+        }
+
+    };
     // ========================================================
     const contextData = {
         loading,
@@ -378,7 +438,9 @@ export const ContextProvider = ({ children }) => {
         singleVideo,
         updateTokens,
         getUserData,
-        userData
+        userData,
+        getNextVideo,
+        getPrevVideo
     }
 
     return (

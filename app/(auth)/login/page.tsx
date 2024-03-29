@@ -72,7 +72,7 @@ const Page: FC<PageProps> = () => {
                             </div>
 
                             <div className="relative h-[21px] justify-between items-center flex mb-8">
-                                <input type={`${showPassword ? 'text' : 'password'}`} placeholder="********" defaultValue={formData.password} onChange={handleOnChange} name="password" className={`focus-within:outline-none w-full h-[53px] p-4 text-black rounded-xl border border-stone-300 justify-start items-center inline-flex`} />
+                                <input type={`${showPassword ? 'text' : 'password'}`} placeholder="Password" defaultValue={formData.password} onChange={handleOnChange} name="password" className={`focus-within:outline-none w-full h-[53px] p-4 text-black rounded-xl border border-stone-300 justify-start items-center inline-flex`} />
 
                                 {formData.password.length > 0 && (
                                     showPassword ? (

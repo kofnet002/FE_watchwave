@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import Pagination from "./components/Pagination";
 import Modal from "./components/Modal";
 import toast from "react-hot-toast";
-
+import { useRouter } from "next/navigation";
 import Plyr from 'plyr';
 import Navbar from "./components/Navbar";
 import ShareVideoModal from "./components/ShareVideoModal";
@@ -20,6 +20,9 @@ const Page: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showShare, setShowShare] = useState<boolean>(false);
   const [copied, setCopied] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const route = useRouter();
 
   const frontEndUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
@@ -33,103 +36,79 @@ const Page: FC = () => {
     const accessToken = Cookies.get('access-token') as string
     if (accessToken) {
       const _videos = await getAllVideos(accessToken, page)
-      if (_videos) setVideoData(_videos)
+      if (_videos) {
+        setVideoData(_videos)
+      }
     } else {
       const _tokens = await updateTokens()
       if (_tokens) {
         const access_token = Cookies.get('access-token') as string
         const _videos = await getAllVideos(access_token, page)
-        if (_videos) setVideoData(_videos)
+        if (_videos) {
+          setVideoData(_videos)
+        }
       }
     }
   }
 
   useEffect(() => {
     fetchVideos(1)
-    // document.addEventListener('DOMContentLoaded', () => {
-    //   const player = new Plyr('#player');
-    // });
   }, [])
 
-
-  // const player = new Plyr('#player');
 
   // PAGINATION
   const totalPages = videoData && videoData.count;
 
+  const handleCardClick = (video: any) => {
+    route.push(`/watch?v=${video.id}`)
+  }
+
   return (
     <div>
-
-      <div>
+      <div className="mb-16">
         <Navbar />
       </div>
 
-      {videoData ?
+      <div className="w-full sm:px-[0%] md:px-[5%] pb-12">
 
-        (videoData && videoData.results.data.map((video: any) => {
-          const shareUrl = `${frontEndUrl}/watch?v=${video.id}`
-
-          return (
-            <div key={video.id} className="mb-8 relative">
-              <video className="h-[70dvh] w-full object-contain mb-5" src={video.video_url} autoPlay controls title={video.title}></video>
-
-              {/* <video id="player" playsInline autoPlay loop controls className="mb-10 h-4">
-              <source src={video.video_url} type="video/mp4" />
-            </video> */}
-
-              <div className="px-4 md:px-6 lg:px-8">
-                <div className="">
-                  <div className="flex justify-between items-center mb-7">
-                    <h2 className="font-bold text-lg md:text-xl lg:text-2xl">{video.title}</h2>
-
-                    <div className="flex justify-end me-5" >
-                      <div className="flex gap-1 items-center p-2 rounded-badge hover:cursor-pointer bg-gray-900"
-                        onClick={() => setShowShare(!showShare)}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
-                        </svg>
-                        <p className="">share</p>
-                      </div>
-
-                      {showShare &&
-                        <ShareVideoModal
-                          copied={copied}
-                          setCopied={setCopied}
-                          setShowShare={setShowShare}
-                          shareUrl={shareUrl}
-                          showShare={showShare}
-                        />
-                      }
-
-                    </div>
-
-                  </div>
-                  {/* <p className="font-bold text-white text-lg md:text-xl lg:text-2xl mx-1 hidden sm:flex">·</p> */}
-                  <p className="text-gray-500 text-sm md:text-base">{video.description}</p>
-                </div>
-              </div>
-            </div>
-
-          )
-        }
-        )
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-[80dvh]">
+            <span className="loading loading-spinner loading-lg bg-white"></span>
+          </div>
         ) : (
-          <div className="flex items-center justify-center h-screen">
-            <span className="loading loading-spinner loading-md bg-white"></span>
+          <div className={`flex flex-wrap items-center gap-5 justify-center max-w-full`}>
+            {videoData && videoData.results.data.map((video: any) => {
+              return (
+                <div
+                  onClick={() => handleCardClick(video)}
+                  key={video.id}
+                  className={`hover:cursor-pointer hover:scale-105 transition max-w-[360px] h-[250px] rounded-[32px] flex-col justify-start items-start gap-2.5 inline-flex`}
+                  onMouseEnter={() => setIsHovered(true)}
+                  onMouseLeave={() => setIsHovered(false)}
+                >
+                  <div className="flex-col gap-2 justify-center items-start flex flex-wrap">
+                    <video
+                      className="object-cover max-w-[397px] h-[200px] md:rounded-[20px]"
+                      src={video.video_url || video.video}
+                      width={500}
+                      height={150}
+                      autoPlay={isHovered}
+                      muted
+                      loop
+                    />
+                    <div className="font-semibold w-[300px] overflow-ellipsis truncate">{video.title}</div>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         )}
 
-      {loading || videoData && (
-        <div className="mb-20">
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      )}
+      </div>
+
     </div>
+
   )
 };
 
