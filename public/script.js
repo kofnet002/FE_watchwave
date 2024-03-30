@@ -13,6 +13,11 @@ const volumeSlider = document.querySelector(".volume-slider")
 const videoContainer = document.querySelector(".video-container")
 const timelineContainer = document.querySelector(".timeline-container")
 const video = document.querySelector("video")
+const videoTitle = document.querySelector("#video_title").innerHTML;
+
+
+const encodedTitle = encodeURIComponent(videoTitle);
+
 
 document.addEventListener("keydown", e => {
     const tagName = document.activeElement.tagName.toLowerCase()
@@ -61,6 +66,9 @@ document.addEventListener("mousemove", e => {
 
 let isScrubbing = false
 let wasPaused
+
+const previewImages = `https://res.cloudinary.com/dj8vdj1r3/image/upload/v1711809625/videos/${encodedTitle}/previews`
+
 function toggleScrubbing(e) {
     const rect = timelineContainer.getBoundingClientRect()
     const percent = Math.min(Math.max(0, e.x - rect.x), rect.width) / rect.width
@@ -84,7 +92,7 @@ function handleTimelineUpdate(e) {
         1,
         Math.floor((percent * video.duration) / 10)
     )
-    const previewImgSrc = `assets/previewImgs/preview${previewImgNumber}.jpg`
+    const previewImgSrc = `${previewImages}/image_${previewImgNumber}.jpg`
     previewImg.src = previewImgSrc
     timelineContainer.style.setProperty("--preview-position", percent)
 

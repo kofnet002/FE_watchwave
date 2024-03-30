@@ -4,13 +4,9 @@ import { FC, Suspense, useContext, useEffect, useState } from "react";
 import Context from "@/app/lib/helper/AppContext";
 import Cookies from "js-cookie";
 import { useRouter, useSearchParams } from "next/navigation";
-import toast from "react-hot-toast";
-import { FacebookIcon, TelegramShareButton, TelegramIcon, TwitterIcon } from "react-share";
-import Modal from "@/app/components/Modal";
 import Navbar from "../components/Navbar";
 import ShareVideoModal from "../components/ShareVideoModal";
-import Plyr from "plyr";
-import Script from "next/script";
+import { Metadata } from "next";
 
 
 interface PageProps { }
@@ -29,7 +25,6 @@ const Page: FC = () => {
     const [showShare, setShowShare] = useState<boolean>(false);
     const [copied, setCopied] = useState(false);
     const [externalDataLoaded, setExternalDataLoaded] = useState(false);
-    const currentPage = 1;
     const router = useRouter();
     const getParams = useSearchParams();
     const frontEndUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
@@ -71,6 +66,8 @@ const Page: FC = () => {
     }, [])
 
     const shareUrl = `${frontEndUrl}/watch?v=${videoData && videoData.id}`
+    const currentVideoIndex = videoData && videoData.current_index
+    const totalCount = videoData && videoData.total_count
 
     useEffect(() => {
         if (externalDataLoaded) {
@@ -145,16 +142,20 @@ const Page: FC = () => {
                                             <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
                                         </svg>
                                     </button>
-                                    <button className={``} onClick={handlePrevVideo}>
-                                        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fillRule="evenodd" d="M7 6a1 1 0 0 1 2 0v4l6.4-4.8A1 1 0 0 1 17 6v12a1 1 0 0 1-1.6.8L9 14v4a1 1 0 1 1-2 0V6Z" clipRule="evenodd" />
-                                        </svg>
-                                    </button>
-                                    <button className={``} onClick={handleNextVideo}>
-                                        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fillRule="evenodd" d="M17 6a1 1 0 1 0-2 0v4L8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8L15 14v4a1 1 0 1 0 2 0V6Z" clipRule="evenodd" />
-                                        </svg>
-                                    </button>
+                                    {currentVideoIndex !== 1 &&
+                                        <button onClick={handlePrevVideo}>
+                                            <svg className="w-7 h-7 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fillRule="evenodd" d="M7 6a1 1 0 0 1 2 0v4l6.4-4.8A1 1 0 0 1 17 6v12a1 1 0 0 1-1.6.8L9 14v4a1 1 0 1 1-2 0V6Z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    }
+                                    {currentVideoIndex !== totalCount &&
+                                        <button className={`${currentVideoIndex === totalCount} ? 'hidden' : '' `} onClick={handleNextVideo}>
+                                            <svg className="w-7 h-7 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fillRule="evenodd" d="M17 6a1 1 0 1 0-2 0v4L8.6 5.2A1 1 0 0 0 7 6v12a1 1 0 0 0 1.6.8L15 14v4a1 1 0 1 0 2 0V6Z" clipRule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    }
                                     <div className="volume-container">
                                         <button className="mute-btn">
                                             <svg className="volume-high-icon" viewBox="0 0 24 24">
@@ -167,7 +168,7 @@ const Page: FC = () => {
                                                 <path fill="currentColor" d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z" />
                                             </svg>
                                         </button>
-                                        <input className="volume-slider" type="range" min="0" max="1" step="any" value="1" />
+                                        <input className="volume-slider text-white" type="range" min="0" max="1" step="any" value="1" style={{ color: 'white' }} />
                                     </div>
                                     <div className="duration-container">
                                         <div className="current-time">0:00</div>
@@ -212,7 +213,7 @@ const Page: FC = () => {
                         <div className="w-[90%] max-w-[1000px] mx-auto">
                             <div className="">
                                 <div className="flex justify-between gap-16 items-start mb-7">
-                                    <h2 className="font-bold text-lg md:text-xl lg:text-2xl">{videoData && videoData.title}</h2>
+                                    <h2 id='video_title' className="font-bold text-lg md:text-xl lg:text-2xl">{videoData && videoData.title}</h2>
 
                                     <div className="flex justify-end me-5" >
                                         <div className="flex gap-2 items-center p-2 rounded-badge hover:cursor-pointer bg-gray-900"
@@ -236,11 +237,11 @@ const Page: FC = () => {
                                     </div>
 
                                 </div>
-                                <p className="text-gray-500 text-sm md:text-base">
+                                <p className="text-gray-500 text-sm md:text-base mb-5">
                                     {showFullDescription ? videoData.description : videoData.description.substring(0, 200)}
-                                    {!showFullDescription && '...'}
+                                    {videoData.description.length > 200 && !showFullDescription && '...'}
                                 </p>
-                                {!showFullDescription && <span className="hover:cursor-pointer" onClick={toggleDescription}>Show more</span>}
+                                {videoData.description.length > 200 && !showFullDescription && <span className="hover:cursor-pointer" onClick={toggleDescription}>Show more</span>}
                                 {showFullDescription && <span className="hover:cursor-pointer" onClick={toggleDescription}>Show less</span>}
                             </div>
                         </div>
