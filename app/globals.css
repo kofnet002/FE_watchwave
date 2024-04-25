@@ -43,19 +43,19 @@ body {
 /* Define custom scrollbar styles */
 .scrollbar::-webkit-scrollbar {
   width: 1px;
-  display: none;
+  /* display: none; */
   /* Width of the scrollbar */
 }
 
 /* Track (the area behind the scrollbar) */
 .scrollbar::-webkit-scrollbar-track {
-  background: #002e3e;
+  background: #d8227d;
   /* Track background color */
 }
 
 /* Thumb (the draggable part of the scrollbar) */
 .scrollbar::-webkit-scrollbar-thumb {
-  background: #144355;
+  background: #630132;
   border-radius: 1px;
   /* Rounded corners for the thumb */
 }

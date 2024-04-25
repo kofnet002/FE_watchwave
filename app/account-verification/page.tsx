@@ -33,7 +33,7 @@ const Page: FC<PageProps> = () => {
                                 we have sent a mail to <span className="text-blue-500 font-semibold">{email} </span></p>
                         </div>
 
-                        <div onClick={handleSubmit} className="mb-3 hover:cursor-pointer">Log in</div>
+                        <div onClick={handleSubmit} className="mb-6 hover:cursor-pointer">Log in</div>
                     </div>
                 </div>
             </div>

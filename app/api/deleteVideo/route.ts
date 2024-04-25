@@ -3,22 +3,19 @@ import { NextRequest } from "next/server"
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export async function GET(req: NextRequest) {
+export async function DELETE(req: NextRequest) {
     const authorization = req.headers.get('Authorization') as string;
+
     const { searchParams } = new URL(req.url);
-    const page = searchParams.get('page');
-    const page_size = searchParams.get('page_size');
+    const id = searchParams.get('id');
 
     try {
-        const response = await fetch(`${baseUrl}/api/v1/videos/?page=${page}&page_size=${page_size}`, {
-            cache: 'no-cache',
-            method: 'GET',
+        const response = await fetch(`${baseUrl}/api/v1/videos/${id}/`, {
+            method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json',
                 Authorization: authorization
             },
         })
-
         if (response.ok) {
             const responseData = await response.json();
 
@@ -26,7 +23,6 @@ export async function GET(req: NextRequest) {
         }
         else {
             const errorData = await response.json();
-
             return new Response(JSON.stringify(errorData));
         }
     } catch (error) {

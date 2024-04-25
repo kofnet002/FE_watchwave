@@ -8,10 +8,10 @@ const config: Config = {
   ],
 
   theme: {
-    // screens: {
-    //   'md': '666px',
-    //   'lg': '1366px'
-    // },
+    screens: {
+      'md': '936px',
+      // 'lg': '1366px'
+    },
     extend: {
       backgroundImage: {
         // "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -20,7 +20,7 @@ const config: Config = {
       },
       colors: {
         primary: "#630132",
-        disabled: "#F7E1E7",
+        disabled: "#FBF0F3",
         // primaryLight: "#FBF0F3",
         // cardBg: "#DF829C",
         // cardBorder: "#C7305C",

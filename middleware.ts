@@ -5,9 +5,9 @@ import { NextResponse } from "next/server";
 export default withAuth(async function middleware(req) {
     const pathname = req.nextUrl.pathname;
 
-    const isAuth = req.cookies.get('access-token');
+    const isAuth = req.cookies.get('refresh-token');
 
-    const sensitiveRoutes = ['/', '/watch', '/account-verification', '/auth/activiate', '/auth/reset-password'];
+    const sensitiveRoutes = ['/', '/watch', '/dashboard', '/dashboard/videos'];
 
     const isAccessingSensitiveRoute = sensitiveRoutes.includes(pathname);
 
@@ -15,9 +15,9 @@ export default withAuth(async function middleware(req) {
 
     const isAccessingSensitiveRoutesAfterLogin = sensitiveRoutesAfterLogin.includes(pathname);
 
-    //  if (!isAuth && isAccessingSensitiveRoute) {
-    //      return NextResponse.redirect(new URL('/login', req.url));
-    //  }
+    if (!isAuth && isAccessingSensitiveRoute) {
+        return NextResponse.redirect(new URL('/login', req.url));
+    }
 
     // if (pathname == '/watch') {
     //     return NextResponse.redirect(new URL('/', req.url));
@@ -35,5 +35,5 @@ export default withAuth(async function middleware(req) {
 
 
 export const config = {
-    matcher: ['/', '/login', '/register', '/account-verification', '/auth/activate', '/auth/reset-password', '/watch']
+    matcher: ['/', '/login', '/register', '/account-verification', '/auth/activate', '/auth/reset-password', '/watch', '/dashboard', '/dashboard/videos']
 }

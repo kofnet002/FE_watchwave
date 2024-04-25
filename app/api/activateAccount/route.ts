@@ -5,6 +5,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 export async function POST(req: NextRequest) {
     const formData = await req.json()
+
     try {
         const response = await fetch(`${baseUrl}/api/v1/auth/users/activation/`, {
             cache: 'no-cache',
@@ -17,10 +18,12 @@ export async function POST(req: NextRequest) {
 
         if (response.ok) {
             const responseData = await response.json();
+            console.log('responseData', responseData);
             return new Response(JSON.stringify(responseData))
         }
         else {
             const errorData = await response.json();
+            console.log('errorData', errorData);
             return new Response(JSON.stringify(errorData));
         }
     } catch (error) {

@@ -15,6 +15,7 @@ const Page: FC = () => {
 
     const route = useRouter();
     const [username, setUsername] = useState<string>('')
+
     const fetchUserData = async () => {
         const accessToken = Cookies.get('access-token') as string
         if (accessToken) {
@@ -34,10 +35,10 @@ const Page: FC = () => {
     }
 
     useEffect(() => {
-        const checkUserData = Cookies.get('_u_n')
-        if (!checkUserData) {
-            fetchUserData()
-        }
+        // const checkUserData = Cookies.get('_u_n')
+        // if (!checkUserData) {
+        // }
+        fetchUserData()
         const getUsername = Cookies.get('_u_n') as string;
         if (getUsername) setUsername(getUsername)
     }, [])
@@ -51,18 +52,23 @@ const Page: FC = () => {
         toast.success('Log out successful', { duration: 5000 })
     }
 
+
     return (
 
-        <div className="navbar bg-base-100 flex justify-between z-50">
+        <div className="navbar flex justify-between z-50">
             <div onClick={() => route.push('/')} className="hover:cursor-pointer">
-                <div className="flex items-center justify-start w-full">
+                <div className="flex items-center justify-start w-full me-10">
                     <Image className="w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />
                     <p className="text-xl">WatchWave</p>
                 </div>
+
             </div>
             <div className="flex-none z-50">
+                {userData && userData.is_admin &&
+                    <div className="hover:cursor-pointer bg-primary py-1 px-2 rounded-md" onClick={() => route.push('/dashboard')}>View dashboard</div>
+                }
                 <ul className="menu menu-horizontal px-1 hover:cursor-pointer">
-                    <li className="flex items-center">
+                    <li className="flex flex-col gap-5">
                         <details>
                             <summary>
                                 <div>
