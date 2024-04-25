@@ -3,7 +3,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import { ButtonHTMLAttributes, FC } from "react";
 
 const buttonVariants = cva(
-    "active:scale-95 flex w-full items-center justify-center rounded-full text-lg font-medium transition-color focus:outline-none focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none disabled:bg-disabled",
+    "active:scale-95 flex w-full items-center justify-center rounded-full text-lg font-medium transition-color focus:outline-none focus:ring-offset-2 disabled:opacity-50py disabled:pointer-events-none disabled:bg-disabled",
     {
         variants: {
             variant: {

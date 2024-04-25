@@ -124,7 +124,7 @@ const Page: FC = () => {
                 )
                 : (
                     <div className="mb-8">
-                        <div className="video-container paused mb-8" data-volume-level="high">
+                        <div className="video-container mb-8" data-volume-level="high">
                             <img className="thumbnail-img" />
                             <div className="video-controls-container">
                                 <div className="timeline-container">
