@@ -238,6 +238,9 @@ export const ContextProvider = ({ children }) => {
     };
 
     const getAllVideos = async (accessToken, page, page_size = 10) => {
+        if (isLoading) {
+            return; // Avoid multiple requests when loading
+        }
         try {
             setLoading(true)
             const response = await fetch(`/api/allvideos/?page=${page}&page_size=${page_size}`, {
@@ -561,6 +564,7 @@ export const ContextProvider = ({ children }) => {
             setIsLoading(false);
         }
     };
+
 
 
     // ========================================================

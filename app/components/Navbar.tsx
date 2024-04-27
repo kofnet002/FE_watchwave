@@ -58,14 +58,14 @@ const Page: FC = () => {
         <div className="navbar flex justify-between z-50">
             <div onClick={() => route.push('/')} className="hover:cursor-pointer">
                 <div className="flex items-center justify-start w-full me-10">
-                    <Image className="w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />
-                    <p className="text-xl">WatchWave</p>
+                    <Image className="w-10 md:w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />
+                    <p className="text-sm md:text-xl">WatchWave</p>
                 </div>
 
             </div>
             <div className="flex-none z-50">
                 {userData && userData.is_admin &&
-                    <div className="hover:cursor-pointer bg-primary py-1 px-2 rounded-md" onClick={() => route.push('/dashboard')}>View dashboard</div>
+                    <div className="hidden md:flex hover:cursor-pointer bg-primary py-1 px-2 rounded-md" onClick={() => route.push('/dashboard')}>View dashboard</div>
                 }
                 <ul className="menu menu-horizontal px-1 hover:cursor-pointer">
                     <li className="flex flex-col gap-5">
@@ -80,8 +80,11 @@ const Page: FC = () => {
                                     </div>
                                 </div>
                             </summary>
-                            <ul onClick={handleLogout} className="p-2 bg-base-100 w-full rounded-t-none">
-                                <li>Log out</li>
+                            <ul className="p-2 bg-base-100 w-full rounded-t-none">
+                                <li className="flex md:hidden">  {userData && userData.is_admin &&
+                                    <div className="hover:cursor-pointer px-2 rounded-md" onClick={() => route.push('/dashboard')}>View dashboard</div>
+                                }</li>
+                                <li onClick={handleLogout} className="px-2 py-1">Log out</li>
                             </ul>
                         </details>
                     </li>
