@@ -142,7 +142,7 @@ const Page: FC = () => {
             <span className="loading loading-spinner loading-lg bg-white"></span>
           </div>
         ) : (
-          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 xl:gap-5 place-items-center justify-center max-w-full`}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 xl:gap-36 gap-5 place-items-center justify-center max-w-full`}>
             {videoData && videoData.map((video: any) => {
               return (
                 <div
@@ -174,7 +174,7 @@ const Page: FC = () => {
       <div ref={sentinelRef}></div>
 
       {isLoading && (
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-5">
           <span className="loading loading-ring loading-lg"></span>
         </div>
       )}

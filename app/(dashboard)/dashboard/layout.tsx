@@ -58,10 +58,10 @@ const Layout = ({ children }: LayoutProps) => {
         //     </div>
         // ) : (
         <div className="w-full flex h-screen">
-            <div className="md:hidden">
+            <div className="lg:hidden">
                 <MobileChatLayout />
             </div >
-            <div className="hidden md:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 px-6">
+            <div className="hidden lg:flex h-full w-full max-w-xs grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 px-6">
                 <Link href='/' className="hover:cursor-pointer text-white my-5 mx-0">
                     <div className="flex items-center justify-start w-full">
                         <Image className="w-14" width={150} height={0} src={Logo} alt="watchwave-logo" priority />

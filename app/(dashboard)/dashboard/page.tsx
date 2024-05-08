@@ -153,7 +153,7 @@ const Page = () => {
     const total_pages = videoData && videoData.results.total_pages;
 
     return (
-        <div className="container py-12 px-5 mx-auto">
+        <div className="container py-12 px-5 mx-auto max-w-full">
             <h1 className="font-bold text-3xl mb-8"> Overview </h1>
 
             {/* CARDS */}

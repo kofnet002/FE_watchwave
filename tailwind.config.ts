@@ -9,8 +9,9 @@ const config: Config = {
 
   theme: {
     screens: {
-      'md': '936px',
-      // 'lg': '1366px'
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1280px'
     },
     extend: {
       backgroundImage: {

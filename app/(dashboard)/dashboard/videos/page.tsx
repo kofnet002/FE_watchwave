@@ -66,9 +66,6 @@ const VideosPage: FC<VideosPageProps> = () => {
         }
 
         sendVideo(access_token, videoData)
-        console.log(formData);
-
-
     }
 
     const disableBtn = () => formData.title === "" || formData.description === "" || formData.videoFile === null
