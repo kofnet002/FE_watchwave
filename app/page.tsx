@@ -82,12 +82,10 @@ const Page: FC = () => {
         }
       } else {
         const errorData = await response.json();
-        // await handleAccessTokenError(errorData);
+        console.error("API error:", errorData);
       }
     } catch (error) {
-      // toast.error("Failed to fetch elections, please reload page", {
-      //   duration: 4000,
-      // });
+
     } finally {
       setIsLoading(false);
     }
@@ -129,6 +127,7 @@ const Page: FC = () => {
     route.push(`/watch?v=${video.id}`)
   }
 
+
   return (
     <div>
       <div className="mb-16">
@@ -142,7 +141,7 @@ const Page: FC = () => {
             <span className="loading loading-spinner loading-lg bg-white"></span>
           </div>
         ) : (
-          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 xl:gap-36 gap-5 place-items-center justify-center max-w-full`}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 xl:gap-36 gap-5 place-items-center justify-center max-w-full`}>
             {videoData && videoData.map((video: any) => {
               return (
                 <div

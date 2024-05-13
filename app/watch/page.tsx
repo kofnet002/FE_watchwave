@@ -134,7 +134,7 @@ const Page: FC = () => {
                                     </div>
                                 </div>
                                 <div className="controls">
-                                    <button className="play-pause-btn">
+                                    <button className="play-pause-btn shrink-0">
                                         <svg className="play-icon" viewBox="0 0 24 24">
                                             <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
                                         </svg>

@@ -49,13 +49,14 @@ body {
 
 /* Track (the area behind the scrollbar) */
 .scrollbar::-webkit-scrollbar-track {
-  background: #d8227d;
+  /* background: #d8227d; */
   /* Track background color */
 }
 
 /* Thumb (the draggable part of the scrollbar) */
 .scrollbar::-webkit-scrollbar-thumb {
-  background: #630132;
+  /* background: #630132; */
+  width: 5px;
   border-radius: 1px;
   /* Rounded corners for the thumb */
 }
