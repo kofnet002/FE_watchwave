@@ -183,7 +183,7 @@ const Page = () => {
                 </div>
             </div>
 
-            <div className="h-[58dvh] overflow-auto scrollbar mb-5 w-full">
+            <div className={`${!isLoading && videoData && videoData.results.data.length === 0 ? 'hidden' : ''} h-[58dvh] overflow-auto scrollbar mb-5 w-full`}>
                 {loading ? (
                     <div className="flex justify-center h-[30dvh] ">
                         <span className="loading loading-spinner bg-white loading-lg"></span>
@@ -249,8 +249,14 @@ const Page = () => {
                         </tbody>
                     </table>
                 )}
-
             </div>
+
+            {!isLoading && videoData && videoData.results.data.length === 0 &&
+                (<div className="h-[58dvh] flex justify-center items-center">
+                    <h1 className="font-bold text-white">No videos</h1>
+                </div>
+                )
+            }
 
             {isModalOpen && (
                 <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} title="Edit video">
@@ -275,7 +281,7 @@ const Page = () => {
                 </Modal>
             )}
 
-            {!isLoading &&
+            {!isLoading && videoData && videoData.results.data.length > 0 &&
                 <div>
                     <Pagination
                         currentPage={currentPage}

@@ -135,7 +135,6 @@ const Page: FC = () => {
       </div>
 
       <div className="w-full sm:px-[0%] md:px-[5%] pb-12">
-
         {loading ? (
           <div className="flex flex-col items-center justify-center h-[80dvh]">
             <span className="loading loading-spinner loading-lg bg-white"></span>
@@ -169,6 +168,12 @@ const Page: FC = () => {
           </div>
         )}
       </div>
+
+      {!isLoading && videoData && videoData.length === 0 && (
+        <div className="flex justify-center items-center h-[70dvh]">
+          <h1 className="text-2xl font-semibold">No videos found</h1>
+        </div>
+      )}
 
       <div ref={sentinelRef}></div>
 
