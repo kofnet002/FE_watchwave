@@ -12,7 +12,7 @@ export async function POST(req: NextRequest, res: NextApiResponse) {
     const formData = await req.json();
 
     try {
-        const response = await fetch(`${baseUrl}/auth/jwt/refresh/`, {
+        const response = await fetch(`${baseUrl}/api/v1/auth/jwt/refresh/`, {
             cache: 'no-cache',
             method: 'POST',
             headers: {

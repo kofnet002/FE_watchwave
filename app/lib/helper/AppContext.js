@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useState, useEffect } from 'react'
+import { createContext, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
@@ -13,8 +13,6 @@ export const ContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [loading, setLoading] = useState(false)
     const [email, setEmail] = useState()
-    const [deliveries, setDeliveries] = useState()
-    const [error, setError] = useState(null);
     const [userData, setUserData] = useState();
 
     const route = useRouter();
@@ -263,6 +261,7 @@ export const ContextProvider = ({ children }) => {
             }
         } catch (error) {
             console.error('Error:', error)
+            toast.error('Failed to fetch videos, kindly refresh the page', { duration: 4000 })
             setLoading(false)
         }
         finally {
@@ -404,6 +403,7 @@ export const ContextProvider = ({ children }) => {
             Cookies.remove('access-token')
             Cookies.remove('refresh-token')
             route.push('/login')
+            toast.success('Session expired, please login again', { duration: 4000 })
         }
         // if (loading) setLoading(false)
     }

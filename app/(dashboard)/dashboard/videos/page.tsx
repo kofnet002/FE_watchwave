@@ -17,7 +17,7 @@ interface VideosPageProps { }
 
 const VideosPage: FC<VideosPageProps> = () => {
 
-    const { isLoading, sendVideo } = useContext(Context)
+    const { isLoading, sendVideo, updateTokens } = useContext(Context)
 
     const access_token = Cookies.get('access-token')
 
@@ -65,7 +65,15 @@ const VideosPage: FC<VideosPageProps> = () => {
             videoData.append("video", formData.videoFile);
         }
 
-        sendVideo(access_token, videoData)
+        if (access_token) {
+            sendVideo(access_token, videoData)
+        } else {
+            const _updatetokens = await updateTokens()
+            if (_updatetokens) {
+                const access_token = Cookies.get('access-token') as string
+                sendVideo(access_token, videoData)
+            }
+        }
     }
 
     const disableBtn = () => formData.title === "" || formData.description === "" || formData.videoFile === null

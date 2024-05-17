@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.json()
 
     try {
-        const response = await fetch(`${baseUrl}/auth/jwt/create/`, {
+        const response = await fetch(`${baseUrl}/api/v1/auth/jwt/create/`, {
             cache: 'no-cache',
             method: 'POST',
             headers: {
