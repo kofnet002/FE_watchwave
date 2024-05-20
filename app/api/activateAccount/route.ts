@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.json()
 
     try {
-        const response = await fetch(`${baseUrl}/api/v1/auth/users/activation/`, {
+        const response = await fetch(`${baseUrl}/api/v1/auth/user/activation/`, {
             cache: 'no-cache',
             method: 'POST',
             headers: {
